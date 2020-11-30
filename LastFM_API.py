@@ -1,6 +1,7 @@
 import pylast
 import requests
 import json
+from genderize import Genderize
 
 API_KEY = '502895a066a65f103a01d4463cf41430'
 API_SECRET = '15a3fe9b112584efb5f7752dae84a1be'
@@ -29,8 +30,16 @@ artist_list = list()
 for d in top_artists:
     name = d['name']
     artist_list.append(name)
+"""
 for i in range(len(artist_list)):
     print(get_first_name(artist_list[i]))
+"""
+first_name_list = list()
+for i in artist_list:
+    first = get_first_name(i)
+    first_name_list.append(first)
+print(Genderize().get(first_name_list))
+
 
 #get top artists by genre
 
