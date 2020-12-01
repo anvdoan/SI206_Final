@@ -37,12 +37,24 @@ def getArtistsbyChart():
         for d in top_artists:
             name = d['name']
             artist_list.append(name)
-        """
-        for i in range(len(artist_list)):
-            print(get_first_name(artist_list[i]))
-        """
+        
 
     return artist_list, full_json
+
+#gets top artists by genre tag, will need to make list of genres and use for loop to call function
+def get_top_artist_by_genre(genre):
+    artist_tag_url = f"http://ws.audioscrobbler.com/2.0/?method=tag.gettopartists&tag={genre}&api_key={API_KEY}&format=json"
+    artist_tag_response = requests.get(artist_tag_url)
+    topArtists = artist_tag_response.json()['topartists']['artist']
+    artist_list = list()
+    for d in topArtists:
+        name = d['name']
+        artist_list.append(name)
+    first_name_list = list()
+    for i in artist_list:
+        first = get_first_name(i)
+        first_name_list.append(first)
+    return first_name_list
 
 #take list of names and return genderize json response linked to the artist's full name for ease of adding to database
 def genderize(artist_list):
