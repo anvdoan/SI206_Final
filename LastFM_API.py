@@ -79,10 +79,18 @@ Modifies: first_name_list, gender_data
 Effects: returns json object of all artists gathered from last.fm API with predicted gender and probability for each artist."""
 def genderize(artist_list):
     first_name_list = list()
+    gender_data = list()
     for i in artist_list:
         first = get_first_name(i)
         first_name_list.append(first)
-    gender_data = Genderize().get(first_name_list)
+    i = 0
+    j = 24
+    while j < 150:
+        names = Genderize().get(first_name_list[i:j])
+        for item in names:
+            gender_data.append(item)
+        i += 25
+        j += 25
     for i in range(len(gender_data)):
         gender_data[i]["name"] = artist_list[i]
         if gender_data[i]["gender"] == None:
@@ -143,7 +151,7 @@ def setUpArtistGenderTable(data, cur, conn):
         gender_id = int(cur.fetchone()[1])
         prob = item['probability']
         cur.execute("INSERT INTO ArtistGender  (artist_id, gender_id, probability) VALUES (?, ?, ?)", (artist_id, gender_id, prob))
-        conn.commit()
+    conn.commit()
 
 def main():
     name_list, json_data = getArtistsbyGenre(['rock', 'pop', 'folk', 'rnb', 'singer-songwriter', 'indie'])
