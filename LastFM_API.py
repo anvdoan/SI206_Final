@@ -143,6 +143,7 @@ def setUpArtistGenderTable(data, cur, conn):
         gender_id = int(cur.fetchone()[1])
         prob = item['probability']
         cur.execute("INSERT INTO ArtistGender  (artist_id, gender_id, probability) VALUES (?, ?, ?)", (artist_id, gender_id, prob))
+        conn.commit()
 
 def main():
     name_list, json_data = getArtistsbyGenre(['rock', 'pop', 'folk', 'rnb', 'singer-songwriter', 'indie'])
