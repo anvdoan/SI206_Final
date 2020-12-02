@@ -148,7 +148,7 @@ def setUpArtistGenderTable(data, cur, conn):
         cur.execute("SELECT artist_id FROM Artists WHERE name = ?", (item['name'],))
         artist_id = int(cur.fetchone()[0])
         cur.execute("SELECT gender_id FROM Genders WHERE name = ?", (item['gender'],))
-        gender_id = int(cur.fetchone()[1])
+        gender_id = int(cur.fetchone()[0])
         prob = item['probability']
         cur.execute("INSERT INTO ArtistGender  (artist_id, gender_id, probability) VALUES (?, ?, ?)", (artist_id, gender_id, prob))
     conn.commit()
