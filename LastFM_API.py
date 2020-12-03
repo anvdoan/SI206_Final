@@ -6,6 +6,7 @@ from genderize import Genderize
 
 #Emma Brown and An Doan
 #SI 206 Final Project FA2020
+#Data Collection
 
 API_KEY = '502895a066a65f103a01d4463cf41430'
 API_SECRET = '15a3fe9b112584efb5f7752dae84a1be'
