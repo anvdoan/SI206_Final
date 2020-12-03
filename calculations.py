@@ -18,6 +18,7 @@ def connectToDatabase(db_name):
     cur = conn.cursor()
     return cur, conn
 
+#practice function to test gathering data from database - returns 25 for each genre
 def gatherArtistsPerGenre(cur, conn, genres):
     data_dict = dict()
     for g in genres:
@@ -45,7 +46,8 @@ def gatherProbabilities(cur, conn):
 def main():
     genres = ['rock', 'pop', 'folk', 'rnb', 'singer-songwriter', 'indie']
     cur, conn = connectToDatabase('lastfm.db')
-    genre_dict = gatherArtistsPerGenre(cur, conn, genres)
+    #call to practice function - can be deleted later:
+    #genre_dict = gatherArtistsPerGenre(cur, conn, genres)
     gender_dict = gatherArtistsPerGender(cur, conn)
     conn.close()
 
