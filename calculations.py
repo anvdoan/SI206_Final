@@ -100,6 +100,8 @@ def main():
     male_probs, fem_probs= gatherProbabilities(cur, conn)
     conn.close()
 
+    #WRITE DATA TO FILE HERE (10 pts)
+
 
 if __name__ == "__main__":
     main()
