@@ -2,6 +2,7 @@ import requests
 import json
 import sqlite3
 import os
+import time
 from genderize import Genderize
 
 #Emma Brown and An Doan
@@ -132,6 +133,8 @@ def setUpArtistTable(data, cur, conn):
     #loop through data and add to database
     i = 0
     for artist in data:
+        if i % 20 == 0:
+            time.sleep(5)
         artist_id = i
         i += 1
         name = artist["name"]
@@ -145,7 +148,11 @@ Effects: creates ArtistGender table in database and adds rows for each artist, t
 def setUpArtistGenderTable(data, cur, conn):
     cur.execute("DROP TABLE IF EXISTS ArtistGender")
     cur.execute("CREATE TABLE ArtistGender (artist_id INTEGER PRIMARY KEY, gender_id INTEGER, probability FLOAT)")
+    i = 0
     for item in data:
+        if i % 20 == 0:
+            time.sleep(5)
+        i += 1
         cur.execute("SELECT artist_id FROM Artists WHERE name = ?", (item['name'],))
         artist_id = int(cur.fetchone()[0])
         cur.execute("SELECT gender_id FROM Genders WHERE name = ?", (item['gender'],))

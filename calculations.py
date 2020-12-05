@@ -18,7 +18,10 @@ def connectToDatabase(db_name):
     cur = conn.cursor()
     return cur, conn
 
-#practice function to test gathering data from database - returns 25 for each genre
+""" Requires: cur, conn (database connection), genres (list)
+Modifies: data_dict
+Effects: Gathers number of artists in database from each genre
+         in the genre list and returns a dictionary with the genres as keys, and counts as values"""
 def gatherArtistsPerGenre(cur, conn, genres):
     data_dict = dict()
     for g in genres:
@@ -27,6 +30,10 @@ def gatherArtistsPerGenre(cur, conn, genres):
             data_dict[g] = data_dict.get(g, 0) + 1
     return data_dict
 
+""" Requires: cur, conn (database connection)
+Modifies: data_dict
+Effects: Gathers number of artists in database organized by gender (F, M, None)
+         in the genre list and returns a dictionary with the genders as keys, and counts as values"""
 def gatherArtistsPerGender(cur, conn):
     data_dict = {}
     cur.execute("SELECT * FROM ArtistGender JOIN Genders ON ArtistGender.gender_id = Genders.gender_id WHERE Genders.gender_id = 0")
@@ -40,7 +47,48 @@ def gatherArtistsPerGender(cur, conn):
         data_dict["none"] = data_dict.get("none", 0) + 1
     return data_dict
 
+""" Requires: cur, conn (database connection)
+Modifies: male_probs, fem_probs
+Effects: Gathers the probability of each gender prediction for every artist that was 
+         determined to be male or female, as predictions of none have no probability returned. """
 def gatherProbabilities(cur, conn):
+    male_probs = []
+    fem_probs = []
+    cur.execute("SELECT probability FROM ArtistGender JOIN Genders ON ArtistGender.gender_id = Genders.gender_id WHERE Genders.gender_id = 0")
+    i = 0
+    for row in cur:
+        male_probs.append(row)
+        i += 1
+    cur.execute("SELECT probability FROM ArtistGender JOIN Genders ON ArtistGender.gender_id = Genders.gender_id WHERE Genders.gender_id = 1")
+    i = 0
+    for row in cur:
+        fem_probs.append(row)
+        i += 1
+    return male_probs, fem_probs
+
+""" Requires: cur, conn (database connection)
+Modifies: ????????
+Effects: Gathers the number of female, male, and non-binary artist names, organized by genre. """
+def gatherGendersbyGenre(cur, conn):
+    pass
+
+""" Requires: gender_dict
+Modifies: nothing
+Effects: Generates a bar graph displaying the number of artists of each gender (Male, Female, None) """
+def makeBarChart(gender_dict):
+    pass
+
+""" Requires: ??????
+Modifies: nothing
+Effects: Generates a radar plot displaying the number of artists of each gender per genre. """
+def makeRadarPlot():
+    pass
+
+""" Requires: male_probs, fem_probs
+Modifies: nothing
+Effects: Generates a scatter plot displaying the probability of correctness of each gender predictiton, 
+         organized by gender(Male, Female, None) with the average probability noted. """
+def makeScatterPlot():
     pass
 
 def main():
@@ -49,6 +97,7 @@ def main():
     #call to practice function - can be deleted later:
     #genre_dict = gatherArtistsPerGenre(cur, conn, genres)
     gender_dict = gatherArtistsPerGender(cur, conn)
+    male_probs, fem_probs= gatherProbabilities(cur, conn)
     conn.close()
 
 
