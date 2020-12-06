@@ -57,23 +57,23 @@ def gatherProbabilities(cur, conn):
     cur.execute("SELECT probability FROM ArtistGender JOIN Genders ON ArtistGender.gender_id = Genders.gender_id WHERE Genders.gender_id = 0")
     i = 0
     for row in cur:
-        male_probs.append(row)
+        male_probs.append(row[0])
         i += 1
     cur.execute("SELECT probability FROM ArtistGender JOIN Genders ON ArtistGender.gender_id = Genders.gender_id WHERE Genders.gender_id = 1")
     i = 0
     for row in cur:
-        fem_probs.append(row)
+        fem_probs.append(row[0])
         i += 1
     return male_probs, fem_probs
 
-""" Requires: cur, conn (database connection)
-Modifies: ????????
-Effects: Gathers the number of female, male, and non-binary artists, organized by genre. """
+""" Requires: cur, conn (database connection), gender (int), genre (list)
+Modifies: data_dict
+Effects: Gathers the number of artists from gender passed, organized by genre. """
 def gatherGenderbyGenre(cur, conn, gender, genres):
     data_dict = dict()
     cur.execute("SELECT genre FROM Artists JOIN ArtistGender ON Artists.artist_id = ArtistGender.artist_id WHERE ArtistGender.gender_id = ?", (gender,))
     for g in cur:
-        data_dict[g] = data_dict.get(g, 0) + 1
+        data_dict[g[0]] = data_dict.get(g[0], 0) + 1
     return data_dict
 
 """ Requires: gender_dict
@@ -108,6 +108,20 @@ def main():
     conn.close()
 
     #WRITE DATA TO FILE HERE (10 pts)
+    with open('resultsdemo.txt', 'w') as file:
+        file.write("Number of artists of each reported gender (M, F, None) \n")
+        file.write(json.dumps(gender_dict) + "\n\n")
+        file.write("Collection of probabilities of each male artist prediction \n")
+        file.write(json.dumps(male_probs) + "\n\n")
+        file.write("Collection of probabilities of each female artist prediction \n")
+        file.write(json.dumps(fem_probs) + "\n\n")
+        file.write("Number of male artists of each genre \n")
+        file.write(json.dumps(male_count) + "\n\n")
+        file.write("Number of female artists of each genre \n")
+        file.write(json.dumps(fem_count) + "\n\n")
+        file.write("Number of nonbinary artists of each genre \n")
+        file.write(json.dumps(none_count))
+    file.close()
 
 
 if __name__ == "__main__":
