@@ -68,9 +68,13 @@ def gatherProbabilities(cur, conn):
 
 """ Requires: cur, conn (database connection)
 Modifies: ????????
-Effects: Gathers the number of female, male, and non-binary artist names, organized by genre. """
-def gatherGendersbyGenre(cur, conn):
-    pass
+Effects: Gathers the number of female, male, and non-binary artists, organized by genre. """
+def gatherGenderbyGenre(cur, conn, gender, genres):
+    data_dict = dict()
+    cur.execute("SELECT genre FROM Artists JOIN ArtistGender ON Artists.artist_id = ArtistGender.artist_id WHERE ArtistGender.gender_id = ?", (gender,))
+    for g in cur:
+        data_dict[g] = data_dict.get(g, 0) + 1
+    return data_dict
 
 """ Requires: gender_dict
 Modifies: nothing
@@ -98,6 +102,9 @@ def main():
     #genre_dict = gatherArtistsPerGenre(cur, conn, genres)
     gender_dict = gatherArtistsPerGender(cur, conn)
     male_probs, fem_probs= gatherProbabilities(cur, conn)
+    fem_count = gatherGenderbyGenre(cur, conn, 1, genres)
+    male_count = gatherGenderbyGenre(cur, conn, 0, genres)
+    none_count = gatherGenderbyGenre(cur, conn, 2, genres)
     conn.close()
 
     #WRITE DATA TO FILE HERE (10 pts)
