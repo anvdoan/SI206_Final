@@ -46,7 +46,8 @@ def getArtistsbyGenre(genre):
 
 """ Requires: artist_list (list of strings)
 Modifies: first_name_list, gender_data
-Effects: returns json object of all artists gathered from last.fm API with predicted gender and probability for each artist."""
+Effects: returns json object of all artists gathered from last.fm API with predicted gender and probability for each artist.
+         calls get_first_name() to get first names of artists."""
 def genderize(artist_list):
     first_name_list = list()
     gender_data = list()
@@ -116,10 +117,13 @@ def setUpArtistGenderTable(data, cur, conn):
         cur.execute("INSERT INTO ArtistGender  (artist_id, gender_id, probability) VALUES (?, ?, ?)", (artist_id, gender_id, prob))
     conn.commit()
 
+""" Requires: nothing
+Modifies: genre, name_list, json_data, gender_data, cur, conn, i, lastfm.db
+Effects: calls getArtistsbyGenre(), genderize(), setUpDatabase(), setUpGenderTable(), setUpArtistTable(), setUpArtistGenderTable()"""
 def main():
     genres = ['rock', 'pop', 'folk', 'rnb', 'singer-songwriter', 'indie']
     #change index every time you run the program, 0-5
-    genre = genres[5]
+    genre = genres[0]
     name_list, json_data = getArtistsbyGenre(genre)
     gender_data = genderize(name_list)
     cur, conn = setUpDatabase('lastfm.db')
