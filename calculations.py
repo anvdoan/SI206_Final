@@ -3,6 +3,7 @@ import json
 import sqlite3
 import os
 import plotly as px
+import plotly.graph_objects as go
 
 
 #Emma Brown and An Doan
@@ -86,7 +87,38 @@ def makeBarChart(gender_dict):
 Modifies: nothing
 Effects: Generates a radar plot displaying the number of artists of each gender per genre. """
 def makeRadarPlot():
-    pass
+    genres = ['rock', 'pop', 'folk', 'rnb', 'singer-songwriter', 'indie']
+    fig = go.Figure()
+    fig.add_trace(go.Scatterpolar(
+        r=[17, 8, 21, 17, 22, 17],
+        theta= genres,
+        fill='toself',
+        name='Male'
+    ))
+    fig.add_trace(go.Scatterpolar(
+        r=[4, 15, 3, 5, 3, 2],
+        theta= genres,
+        fill='toself',
+        name='Female'
+    ))
+    fig.add_trace(go.Scatterpolar(
+        r=[4, 2, 1, 3, 0, 0],
+        theta= genres,
+        fill= 'toself',
+        name='None'
+
+    ))
+    fig.update_layout(
+        polar=dict(
+            radialaxis = dict(
+                visible = True,
+                range= [0, 25]
+            )
+        ),
+        showlegend = True
+    )
+    fig.write_image('radar_plot.jpeg')
+
 
 """ Requires: male_probs, fem_probs
 Modifies: nothing
@@ -122,6 +154,8 @@ def main():
         file.write("Number of nonbinary artists of each genre \n")
         file.write(json.dumps(none_count))
     file.close()
+    #CREATE VISUALIZATIONS
+    makeRadarPlot()
 
 
 if __name__ == "__main__":
