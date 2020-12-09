@@ -81,8 +81,15 @@ def gatherGenderbyGenre(cur, conn, gender, genres):
 """ Requires: gender_dict
 Modifies: nothing
 Effects: Generates a bar graph displaying the number of artists of each gender (Male, Female, None) """
-def makeBarChart(gender_dict):
-    pass
+def makeBarChart():
+    gender= ['Male', 'Female', 'None'] 
+    numArtists=[107,33, 10]
+    colors = ['goldenrod','midnightblue', 'violet']
+    fig = go.Figure(data=go.Bar(x= gender, y=numArtists, 
+    marker_color= colors))
+    fig.update_layout(title='Number of Artists on Top Artist Charts (all genres) by Gender')
+    fig.write_image('barChart.jpeg')
+
 
 """ Requires: ??????
 Modifies: nothing
@@ -91,31 +98,35 @@ def makeRadarPlot():
     genres = ['rock', 'pop', 'folk', 'rnb', 'singer-songwriter', 'indie']
     fig = go.Figure()
     fig.add_trace(go.Scatterpolar(
-        r=[17, 8, 21, 17, 22, 17],
+        r=[18, 7, 22, 16, 22, 22],
         theta= genres,
-        fill='toself',
-        name='Male'
+        mode='lines',
+        name='Male', 
+        line_color='aquamarine'
     ))
     fig.add_trace(go.Scatterpolar(
-        r=[4, 15, 3, 5, 3, 2],
+        r=[3, 16, 3, 5, 3, 3],
         theta= genres,
-        fill='toself',
-        name='Female'
+        mode='lines',
+        name='Female', 
+        line_color='darkkhaki'
     ))
     fig.add_trace(go.Scatterpolar(
-        r=[4, 2, 1, 3, 0, 0],
+        r=[4, 2, 0, 4, 0, 0],
         theta= genres,
-        fill= 'toself',
-        name='None'
+        mode='lines',
+        name='None', 
+        line_color='coral'
 
     ))
     fig.update_layout(
         polar=dict(
             radialaxis = dict(
                 visible = True,
-                range= [0, 25]
+                range= [0, 23]
             )
         ),
+        title="Number of Top Artists on Top Charts for Genres by Gender",
         showlegend = True
     )
     fig.write_image('radar_plot.jpeg')
@@ -126,7 +137,25 @@ Modifies: nothing
 Effects: Generates a scatter plot displaying the probability of correctness of each gender predictiton, 
          organized by gender(Male, Female, None) with the average probability noted. """
 def makeScatterPlot():
-    pass
+    gender = ['Male', 'Female']
+    
+    maleProbs = [0.88, 0.92, 0.79, 0.99, 0.75, 0.97, 0.92, 0.86, 1.0, 0.95, 0.87, 0.98, 0.97, 0.94, 0.98, 1.0, 0.86, 0.8, 0.99, 0.88, 0.78, 0.98, 0.88, 0.98, 0.99, 0.95, 0.8, 1.0, 0.75, 0.75, 0.98, 0.93, 0.98, 0.99, 0.86, 0.95, 0.89, 0.86, 0.68, 0.92, 0.94, 0.99, 0.93, 0.86, 0.74, 0.95, 0.88, 0.86, 0.99, 0.9, 0.97, 0.98, 0.56, 0.99, 0.9, 0.67, 0.97, 0.96, 0.99, 0.99, 0.94, 0.94, 0.82, 0.99, 0.98, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.98, 0.99, 0.99, 0.95, 0.98, 0.94, 0.95, 0.97, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.86, 0.97, 0.86, 0.86, 0.83, 0.97, 0.61, 0.96, 0.65, 0.91, 0.86, 0.97, 1.0, 0.77, 0.86, 0.86, 1.0, 0.78, 0.76, 0.76, 0.86, 0.92]
+    femProbs = [0.71, 0.52, 0.74, 0.97, 0.97, 0.97, 0.97, 0.98, 0.94, 0.98, 0.92, 0.67, 0.96, 0.98, 0.77, 0.98, 0.95, 0.78, 0.96, 0.98, 0.77, 0.97, 0.98, 0.97, 0.99, 0.98, 0.93, 0.52, 0.98, 0.86, 0.98, 0.95, 0.59]
+    
+    
+    fig = go.Figure()
+
+    #work around with box plot bc scatter does not show individual vals
+
+    fig.add_trace(go.Box(y=maleProbs, name='Male', boxpoints='all', jitter=1))
+
+    fig.add_trace(go.Box(y=femProbs, name='Female', boxpoints='all', jitter=1))
+    
+    fig.update_layout(title='Probablity of Genderize API by Gender',
+    showlegend=False)
+
+    fig.write_image('scatter_plot.jpeg')
+
 
 """ Requires: nothing
 Modifies: gender_dict, male_probs, fem_probs, fem_count, male_count, none_count
@@ -162,6 +191,9 @@ def main():
     file.close()
     #CREATE VISUALIZATIONS
     makeRadarPlot()
+    makeBarChart()
+    makeScatterPlot()
+
 
 
 if __name__ == "__main__":
