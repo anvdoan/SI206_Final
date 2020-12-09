@@ -2,7 +2,8 @@ import requests
 import json
 import sqlite3
 import os
-import plotly as px
+import plotly as py
+import plotly.express as px
 import plotly.graph_objects as go
 
 
