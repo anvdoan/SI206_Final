@@ -128,6 +128,11 @@ Effects: Generates a scatter plot displaying the probability of correctness of e
 def makeScatterPlot():
     pass
 
+""" Requires: nothing
+Modifies: gender_dict, male_probs, fem_probs, fem_count, male_count, none_count
+Effects: calls connectToDatabase(), gatherArtistsPerGender(), gatherProbabilities(), gatherGenderbyGenre() 3 times. 
+         writes results to resultsdemo.txt. 
+         calls makeRadarPlot(), makeBarChart(), makeScatterPlot(). """
 def main():
     genres = ['rock', 'pop', 'folk', 'rnb', 'singer-songwriter', 'indie']
     cur, conn = connectToDatabase('lastfm.db')
