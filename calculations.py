@@ -78,7 +78,7 @@ def gatherGenderbyGenre(cur, conn, gender, genres):
         data_dict[g[0]] = data_dict.get(g[0], 0) + 1
     return data_dict
 
-""" Requires: gender_dict
+""" Requires: nothing
 Modifies: nothing
 Effects: Generates a bar graph displaying the number of artists of each gender (Male, Female, None) """
 def makeBarChart():
@@ -91,7 +91,7 @@ def makeBarChart():
     fig.write_image('barChart.jpeg')
 
 
-""" Requires: ??????
+""" Requires: nothing
 Modifies: nothing
 Effects: Generates a radar plot displaying the number of artists of each gender per genre. """
 def makeRadarPlot():
@@ -132,10 +132,10 @@ def makeRadarPlot():
     fig.write_image('radar_plot.jpeg')
 
 
-""" Requires: male_probs, fem_probs
+""" Requires: nothing
 Modifies: nothing
 Effects: Generates a scatter plot displaying the probability of correctness of each gender predictiton, 
-         organized by gender(Male, Female, None) with the average probability noted. """
+         organized by gender(Male, Female) with the average probability noted. """
 def makeScatterPlot():
     gender = ['Male', 'Female']
     
@@ -189,6 +189,7 @@ def main():
         file.write("Number of nonbinary artists of each genre \n")
         file.write(json.dumps(none_count))
     file.close()
+
     #CREATE VISUALIZATIONS
     makeRadarPlot()
     makeBarChart()
